@@ -1,0 +1,33 @@
+# Etherpad
+version: '3'
+
+services:
+  etherpad:
+    image: etherpad/etherpad
+    ports: 
+      - 9001:9001
+    environment:
+      - TITLE=pad
+      - DB_TYPE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=wordpress
+      - DB_USER=wordpress
+      - DB_PASS=wordpress
+    depends_on:
+      - "db"
+
+  db:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgres/data
+    restart: always
+    environment:
+      - POSTGRES_USER=wordpress
+      - POSTGRES_PASSWORD=wordpress
+      - POSTGRES_DB=wordpress
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
