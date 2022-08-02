@@ -5,15 +5,15 @@ services:
   etherpad:
     image: etherpad/etherpad
     ports: 
-      - 9001:9001
+      - "9001:9001"
     environment:
       - TITLE=pad
       - DB_TYPE=postgres
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_NAME=wordpress
-      - DB_USER=wordpress
-      - DB_PASS=wordpress
+      - DB_NAME=etherpad
+      - DB_USER=etherpad
+      - DB_PASS=daprehte
     depends_on:
       - "db"
 
@@ -23,9 +23,9 @@ services:
       - db_data:/var/lib/postgres/data
     restart: always
     environment:
-      - POSTGRES_USER=wordpress
-      - POSTGRES_PASSWORD=wordpress
-      - POSTGRES_DB=wordpress
+      - POSTGRES_USER=etherpad
+      - POSTGRES_PASSWORD=daprehte
+      - POSTGRES_DB=etherpad
     ports:
       - "5432:5432"
 
