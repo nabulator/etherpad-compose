@@ -1,11 +1,17 @@
 # Etherpad
 version: '3'
 
+networks:
+  etherpad:
+    external: false
+
 services:
   etherpad:
     image: etherpad/etherpad
     ports: 
       - "127.0.0.1:9001:9001"
+    networks:
+      - etherpad
     environment:
       - TITLE=pad
       - DB_TYPE=postgres
@@ -27,8 +33,8 @@ services:
       - POSTGRES_USER=etherpad
       - POSTGRES_PASSWORD=daprehte
       - POSTGRES_DB=etherpad
-    ports:
-      - "5432:5432"
+    networks:
+      - etherpad
 
 volumes:
   db_data:
