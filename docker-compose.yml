@@ -7,10 +7,10 @@ networks:
 
 services:
   etherpad:
-    image: etherpad/etherpad
-    ports: 
-      - "127.0.0.1:9001:9001"
     restart: unless-stopped
+    image: local/etherpad
+    ports:
+      - "127.0.0.1:9003:9001"
     networks:
       - etherpad
     environment:
@@ -21,14 +21,14 @@ services:
       - DB_NAME=etherpad
       - DB_USER=etherpad
       - DB_PASS=daprehte
-      - ADMIN_PASSWORD=
+      - "ADMIN_PASSWORD=${ADMIN_PASSWORD}"
     depends_on:
-      - "db"
+      - db
 
   db:
-    image: postgres
+    image: postgres:14
     volumes:
-      - db_data:/var/lib/postgres/data
+      - db_data:/var/lib/postgresql/data
     restart: always
     environment:
       - POSTGRES_USER=etherpad
@@ -37,6 +37,21 @@ services:
     networks:
       - etherpad
 
+  pgadmin:
+    image: dpage/pgadmin4:4.23
+    networks:
+      - etherpad
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 15432:80
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - db
+
 volumes:
   db_data:
-
+  pgadmin:
